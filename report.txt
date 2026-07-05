@@ -1,0 +1,25 @@
+1.Nếu dùng ArgoCD: giải thích Synced/OutOfSync/Healthy. Nếu không dùng được
+ArgoCD: giải thích Application cần các thông tin nào để sync repo manifest.
+------------
+Synced là trạng thái manifest trong Git và trạng thái trong Cluster trùng nhau
+OutOfSync là trạng thái manifest và trạng thái trong Cluster không khớp, có thể là do dev sửa tay trong server,...
+Healthy là trạng thái web app chạy ổn định
+
+------------
+2.Mô tả luồng truy cập người dùng vào app.
+------------
+
+Người dùng khi truy cập vào app thì sẽ đi qua Cloudflare trước, khi vào server nó sẽ được Ingress phân vào các service, từ service sẽ chuyển đến các pod tương ứng
+
+----------------
+3.Mô tả app/image dùng để triển khai.
+Fastshop được triển khai từ trước, đóng gói thành image đẩy lên docker hub và được pull xuống để dùng.
+---------------
+4.Mô tả luồng triển khai manifest vào cluster.
+Mỗi Khi sync, ArgoCD sẽ lấy code trên manifest repo để xem thông tin trước.
+Sau đó, khi bắt đầu sync thì sẽ hạ dần bản cũ xuống và sync bản mới lên, đồng thời liên tục theo dõi , ta có thể nhìn thấy trong application argoCD
+Khi mà 3 file đó được cập nhật và chạy ổn thì sẽ được báo là Synced và Healthy.
+-----------------
+5. Giải thích từng file: deployment.yaml, service.yaml, ingress.yaml.
+
+Đề dài quá..............
