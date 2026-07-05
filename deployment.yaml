@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastshop-db-huan
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastshop-db-huan
+  template:
+    metadata:
+      labels:
+        app: fastshop-db-huan
+    spec:
+      containers:
+      - name: mssql
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports:
+        - containerPort: 1433
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: MSSQL_SA_PASSWORD
+          value: "HuanActvn2007@"
+        - name: MSSQL_PID
+          value: "Developer"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastshop-app-huan
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastshop-app-huan
+  template:
+    metadata:
+      labels:
+        app: fastshop-app-huan
+    spec:
+      containers:
+      - name: web-app
+        image: huuhuanswe/fastshop-backend-huan:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8002
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:sqlserver://fastshop-db-svc:1433;databaseName=Fastshop;encrypt=true;trustServerCertificate=true;sslProtocol=TLSv1.2;"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "sa"
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: "HuanActvn2007@"
+        - name: SERVER_PORT
+          value: "8002"
+        - name: MAIL_HOST
+          value: "smtp.gmail.com"
+        - name: MAIL_PORT
+          value: "587"
